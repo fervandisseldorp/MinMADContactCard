@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">ContactCard</string>
+    <string name="showListButtonText">Show List</string>
+</resources>
