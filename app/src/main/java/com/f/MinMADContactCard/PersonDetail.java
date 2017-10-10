@@ -17,7 +17,13 @@ public class PersonDetail extends AppCompatActivity {
         setContentView(R.layout.activity_detailed);
 
         Person selectedPerson = (Person) getIntent().getSerializableExtra("PERSON");
-        TextView nameTextView = (TextView) findViewById(R.id.nametextview);
-        TextView ageTextView = (TextView) findViewById(R.id.agetextView);
+        TextView nameTv = (TextView) findViewById(R.id.nametextview);
+        TextView ageTv = (TextView) findViewById(R.id.agetextView);
+
+        String name = selectedPerson.getName();
+        System.out.println("person name " + name);
+
+        nameTv.setText("my name is " + name);
+        ageTv.setText("My age is " + selectedPerson.getAge());
     }
 }

@@ -31,7 +31,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         Intent intent = new Intent(getBaseContext(), ListActivity.class);
         startActivity(intent);
-        // titleView.setText("setting text in onclick");
-
     }
 }

@@ -46,7 +46,8 @@ public class ListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), PersonDetail.class);
-                Person selectedPerson = (Person) listView.getSelectedItem();
+                Person selectedPerson = (Person) persons.get( position );
+
                 intent.putExtra("PERSON", selectedPerson);
                 startActivity(intent);
             }
