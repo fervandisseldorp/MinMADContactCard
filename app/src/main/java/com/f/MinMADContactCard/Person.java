@@ -1,5 +1,7 @@
 package com.f.MinMADContactCard;
 
+import android.graphics.Bitmap;
+
 import java.io.Serializable;
 
 /**
@@ -7,41 +9,77 @@ import java.io.Serializable;
  */
 
 public class Person implements Serializable{
-    int id;
-    String name;
-    int age;
+    private String imageUrl;
+    private String thumbnailUrl;
+    private String hiresUrl;
+    private String firstName;
+    private String lastName;
+    private String email;
 
-    public Person(){
-
+    public Person(String imageUrl, String firstname, String lastName) {
+        this.imageUrl = imageUrl;
+        this.firstName = firstname;
+        this.lastName = lastName;
     }
 
-    public Person(int id, String name, int age){
-        this.id = id;
-        this.name = name;
-        this.age = age;
+    public Person(String firstname, String lastName, String email, String thumbnailUrl, String imageUrl) {
+        this.imageUrl = imageUrl;
+        this.firstName = firstname;
+        this.lastName = lastName;
+        this.email = email;
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    public int getId() {
-        return id;
+    public String getImageUrl() {
+        return imageUrl;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
-    public String getName() {
-        return name;
+    public String getThumbnailUrl() {
+        return thumbnailUrl;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setThumbnailUrl(String thumbnailUrl) {
+        this.thumbnailUrl = thumbnailUrl;
     }
 
-    public int getAge() {
-        return age;
+    public String getHiresUrl() {
+        return hiresUrl;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setHiresUrl(String hiresUrl) {
+        this.hiresUrl = hiresUrl;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String toString(){
+        return firstName + " " + lastName;
     }
 }
+

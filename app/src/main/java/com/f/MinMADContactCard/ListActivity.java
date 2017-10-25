@@ -1,6 +1,7 @@
 package com.f.MinMADContactCard;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -15,10 +16,11 @@ import java.util.ArrayList;
  * Created by ferdinand on 10-10-2017.
  */
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements OnRandomUserAvailable {
     ListView listView;
     ArrayList<Person> persons = new ArrayList<Person>();
     ArrayAdapter<Person> adapter;
+    PersonsDatabase database;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,19 +29,21 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
         listView = (ListView) findViewById(R.id.listview);
 
-        // mocking some data
-        Person p1 = new Person(0, "tester", 12);
-        Person p2 = new Person(1, "testertje2", 17);
-        Person p3 = new Person(2, "teeest", 25);
-        persons.add(p1);
-        persons.add(p2);
-        persons.add(p3);
+
+        // DATABASE SETUP
+        if(database == null){
+            System.out.println("Creating new Database");
+            database = new PersonsDatabase(this);
+
+        }
+
+        database.clearDbforTestingPurposes();
+
 
         // Adapter setup
-        adapter = new ArrayAdapter<Person>(getApplicationContext(), android.R.layout.simple_list_item_1, persons);
+        adapter = new PersonAdapter( getApplicationContext(), persons);
         listView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
 
         // Item clicks
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -52,5 +56,48 @@ public class ListActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // get data in app
+        getRandomPersons();
+        //updateCachedPersons();
+    }
+
+    void getRandomPersons() {
+        String[] urls = new String[] { "https://randomuser.me/api/" };
+        for(int idx = 0; idx < 5; idx++) {
+            AsyncUserTask getRandomUser = new AsyncUserTask(this);
+            getRandomUser.execute(urls);
+        }
+    }
+
+    @Override
+    public void OnRandomUserAvailable(Person person) {
+            database.insertPerson(person);
+            persons.add(person);
+            adapter.notifyDataSetChanged();
+    }
+
+    public void updateCachedPersons(){
+        Cursor cursor = database.getPersons();
+        cursor.moveToFirst();
+        System.out.println("cursor count: " + cursor.getCount());
+        while( cursor.moveToNext() ) {
+            try{
+                String firstname = cursor.getString(cursor.getColumnIndex("firstname"));
+                String lastname = cursor.getString(cursor.getColumnIndex("lastname"));
+                String email = cursor.getString(cursor.getColumnIndex("email"));
+                String thumbnailUrl = cursor.getString(cursor.getColumnIndex("thumbnailUrl"));
+                String imageUrl = cursor.getString(cursor.getColumnIndex("imageUrl"));
+                Person p = new Person(firstname, lastname, email, thumbnailUrl, imageUrl);
+                System.out.println("adding peraon: " + p.toString());
+                persons.add(p);
+            }
+
+            catch(Exception ex){
+                System.out.println(ex.getMessage());
+            }
+
+        }
+        adapter.notifyDataSetChanged();
     }
 }

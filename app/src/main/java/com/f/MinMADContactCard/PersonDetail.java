@@ -2,7 +2,10 @@ package com.f.MinMADContactCard;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 /**
  * Created by ferdinand on 3-10-2017.
@@ -18,12 +21,14 @@ public class PersonDetail extends AppCompatActivity {
 
         Person selectedPerson = (Person) getIntent().getSerializableExtra("PERSON");
         TextView nameTv = (TextView) findViewById(R.id.nametextview);
-        TextView ageTv = (TextView) findViewById(R.id.agetextView);
+        ImageView imageV = (ImageView) findViewById(R.id.personImageV);
+        TextView emailTv = (TextView) findViewById(R.id.emailtextView);
 
-        String name = selectedPerson.getName();
-        System.out.println("person name " + name);
+        nameTv.setText(selectedPerson.getFirstName() + " " + selectedPerson.getLastName() );
+        emailTv.setText(selectedPerson.getEmail());
 
-        nameTv.setText("my name is " + name);
-        ageTv.setText("My age is " + selectedPerson.getAge());
+        Picasso.with(this).load( selectedPerson.getImageUrl() ).transform( new RoundedCornersTransform() ).into(imageV);
+
+
     }
 }
